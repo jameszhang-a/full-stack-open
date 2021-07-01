@@ -1,0 +1,7 @@
+note over browser:
+browser executes the event handler
+that renders notes to display
+end note
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+browser-->server: {content: "hello", date: "2021-07-01T20:18:59.998Z"}
