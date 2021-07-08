@@ -14,11 +14,7 @@ const App = () => {
 	return (
 		<div>
 			<Header course={course} />
-
-			<Content part={part1} exercise={exercises1} />
-			<Content part={part2} exercise={exercises2} />
-			<Content part={part3} exercise={exercises3} />
-
+			<Content part1={part1} part2={part2} part3={part3} ex1={exercises1} ex2={exercises2} ex3={exercises3} />
 			<Total ex1={exercises1} ex2={exercises2} ex3={exercises3} />
 		</div>
 	);
@@ -27,6 +23,14 @@ const App = () => {
 const Header = (props) => <h1>{props.course}</h1>;
 
 const Content = (props) => (
+	<div>
+		<Part part={props.part1} exercise={props.ex1} />
+		<Part part={props.part2} exercise={props.ex2} />
+		<Part part={props.part3} exercise={props.ex3} />
+	</div>
+);
+
+const Part = (props) => (
 	<p>
 		{props.part} {props.exercise}
 	</p>
