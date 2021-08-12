@@ -1,32 +1,27 @@
 import { useState } from 'react';
 
 const App = () => {
-  const [ clicks, setClicks ] = useState({
-    left  : 0,
-    right : 0
-  });
+  const [ left, setLeft ] = useState(0);
+  const [ right, setRight ] = useState(0);
+  const [ allClicks, setAllClicks ] = useState([]);
 
-  const increaseRight = () => {
-    setClicks({
-      ...clicks,
-      right : clicks.right + 1
-    });
+  const handleRight = () => {
+    setRight(right + 1);
+    setAllClicks(allClicks.concat('R'));
   };
-
-  const increaseLeft = () => {
-    setClicks({
-      ...clicks,
-      left : clicks.left + 1
-    });
+  const handleLeft = () => {
+    setLeft(left + 1);
+    setAllClicks(allClicks.concat('L'));
   };
 
   return (
     <div>
-      {clicks.left}
-      <button onClick={() => increaseLeft()}>left</button>
-      <br />
-      {clicks.right}
-      <button onClick={() => increaseRight()}>right</button>
+      {left}
+      <button onClick={() => handleLeft()}>left</button>
+
+      <button onClick={() => handleRight()}>right</button>
+      {right}
+      <div>{allClicks.join(', ')}</div>
     </div>
   );
 };
