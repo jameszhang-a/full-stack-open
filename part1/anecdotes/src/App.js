@@ -14,6 +14,13 @@ const App = () => {
   // State for the current quote and the last
   const [ selected, setSelected ] = useState(0);
 
+  // Set the initial vote for each quote to 0
+  const initialScore = {};
+  for (let i in anecdotes) {
+    initialScore[i] = 0;
+  }
+  const [ score, setScore ] = useState(initialScore);
+
   const randomInt = (max) => {
     return Math.floor(Math.random() * max);
   };
@@ -26,10 +33,35 @@ const App = () => {
     setSelected(idx);
   };
 
+  const updateScore = () => {
+    let copy = { ...score };
+    copy[selected] += 1;
+    setScore(copy);
+  };
+
+  const bestAnecdote = () => {
+    let best,
+      highVote = 0;
+    for (const idx in score) {
+      if (Object.hasOwnProperty.call(score, idx)) {
+        if (score[idx] > highVote) {
+          highVote = score[idx];
+          best = anecdotes[idx];
+        }
+      }
+    }
+    return best;
+  };
+
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       <div>{anecdotes[selected]}</div>
+      <div>has {score[selected]} votes</div>
+      <button onClick={updateScore}>vote</button>
       <button onClick={getNextAnecdote}>next anecdote</button>
+      <h1>Anecdote with most votes</h1>
+      <div>{bestAnecdote()}</div>
     </div>
   );
 };
