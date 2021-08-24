@@ -3,9 +3,8 @@ import { Header } from './Header';
 import { Content } from './Content';
 import { Sum } from './Sum';
 
-export const Course = ({ courses }) => {
-  const { id, name, parts } = courses;
-  console.log(parts);
+export const Course = ({ course }) => {
+  const { id, name, parts } = course;
   return (
     <div>
       <Header name={name} />
