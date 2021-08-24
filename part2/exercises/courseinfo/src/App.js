@@ -1,3 +1,6 @@
+import React from 'react';
+import { Course } from './Component/Course';
+
 const App = () => {
   const course = {
     id    : 1,
@@ -21,5 +24,6 @@ const App = () => {
     ]
   };
 
-  return <Course course={course} />;
+  return <Course courses={course} />;
 };
+export default App;
