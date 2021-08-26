@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import { Filter } from './components/Filter';
+import { People } from './components/People';
+import { PersonForm } from './components/PersonForm';
 
 const App = () => {
   const [ persons, setPersons ] = useState([
@@ -10,25 +13,28 @@ const App = () => {
   const [ newName, setNewName ] = useState('');
   const [ newNum, setNewNum ] = useState('');
   const [ search, setSearch ] = useState('');
+  const [ found, setFound ] = useState(persons);
 
   const handleSubmit = (e) => {
     // Stops refresh on submit
     e.preventDefault();
-    const newPerson = {
-      name   : newName,
-      number : newNum
-    };
 
     // Check for duplicates
     if (containsPerson()) {
-      alert(`${newName} is already in the phonebook`);
+      alert(`'${newName}' is already in the phonebook`);
       setNewName('');
       return;
     }
-    console.log(containsPerson());
+
+    const newPerson = persons.concat({
+      name   : newName,
+      number : newNum
+    });
 
     // Adds new person to state
-    setPersons(persons.concat(newPerson));
+    setPersons(newPerson);
+    setFound(newPerson);
+
     // Clears field
     setNewName('');
   };
@@ -42,12 +48,16 @@ const App = () => {
   };
 
   const handleSearch = (e) => {
+    // Updates display of the search
     setSearch(e.target.value);
-  };
 
-  const foundPerson = persons.filter((person) =>
-    person.name.toLowerCase().includes(search.toLowerCase())
-  );
+    // Filters out people that match the search
+    setFound(
+      persons.filter((person) =>
+        person.name.toLowerCase().includes(e.target.value.toLowerCase())
+      )
+    );
+  };
 
   const containsPerson = () => {
     // `some` returns true if any returns true
@@ -59,35 +69,19 @@ const App = () => {
       <h2>Phonebook</h2>
 
       <h3>Search by name</h3>
-      <form onSubmit={(e) => e.preventDefault()}>
-        <input value={search} onChange={handleSearch} />
-      </form>
+      <Filter search={search} handleSearch={handleSearch} />
 
       <h2>Add Entry</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange} />
-        </div>
-
-        <div>
-          number: <input value={newNum} onChange={handleNumChange} />
-        </div>
-
-        <div>
-          <button type='submit'>add</button>
-        </div>
-      </form>
+      <PersonForm
+        onSubmit={handleSubmit}
+        name={newName}
+        number={newNum}
+        nameChange={handleNameChange}
+        numChange={handleNumChange}
+      />
 
       <h2>Numbers</h2>
-      <div>
-        {foundPerson.map((person) => {
-          return (
-            <div key={person.name}>
-              {person.name} {person.number}
-            </div>
-          );
-        })}
-      </div>
+      <People show={found} />
     </div>
   );
 };
